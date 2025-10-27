@@ -1,0 +1,30 @@
+---
+title: "Class notes 10.15"
+format: html
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+```
+
+## A bit about hex codes for colors
+
+The first row in the `color_survey` set has color `#4864af`. What does this mean?? We read this in pairs, giving us red, green, and blue components. Here, 48 red. These values are in *hexadecimal*, or just *hex*, which means they're base 16. 
+
+The hex number 48 means 4 sixteens and 8 ones. This is 16*4 + 8 = 72. 
+
+What about the blue component, af? In hex, a is 10, b is 11 etc., so af is 10 sixteens and 15 ones. This is 175 in decimal.  
+
+If you put the color code in a code chunk, RStudio will show it to you in the source but not the rendered version.
+
+```{r}
+"#4864af" 
+```
+
+
+
+

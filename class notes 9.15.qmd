@@ -1,0 +1,52 @@
+---
+title: "Class notes template"
+format: html
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(readxl)
+
+color_survey <- read_csv("color_survey.csv")
+
+```
+
+## A bit about hex codes for colors
+
+The first row in the `color_survey` set has color `#4864af`. What does this mean? We read this in pairs, giving us red, green, and blue components. Here, 48 red. These values are in *hexadecimal*, or just *hex*, which means they're base 16.
+
+The hex number 48 means 4 sixteens and 8 ones. This is 16*4 + 8 = 72. 
+
+What about the blue component, af? In hex, a is 10, b is 11 etc., so af is 10 sixteens and 15 ones. This is 175 in decimal.
+
+You don't want to use hex code and RGB - they carry the same information. The RGB is dissecting that number.
+
+If you put the color code in a code chunk, RStudio will show it to you. Nicola's github for examples. 
+
+```{r}
+"#4864af"
+```
+
+
+
+```{r}
+billboard_long %>% 
+  head(10) %>% 
+  gt::gt()
+```
+
+Problem 2
+```{r}
+speeds_long %>% 
+  group_by(`AIRPORT CODE`) %>% 
+  filter(Speed == max(speed)) %>% 
+  ungroup() %>% 
+  count(Carrier) %>% 
+  arrange(-n) %>% 
+  gt()
+
+

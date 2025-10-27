@@ -1,0 +1,35 @@
+---
+title: "Class notes 10.1"
+format: html
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+library(readxl)
+scooby <- read_excel("scooby.xlsx")
+```
+
+## Revisiting Scooby
+
+When looking at `setting_terrain` vs another variable, make sure you considered `NA`s. Let's consider that variable and `arrested`.
+
+```{r}
+sum(is.na(scooby$setting_terrain))
+sum(is.na(scooby$arrested)) 
+```
+
+Why are there so many missing values for `arrested`? Let's looks at those.
+
+```{r}
+missing_arrested <- scooby %>% 
+  filter(is.na(arrested))
+```
+
+
+
+
+

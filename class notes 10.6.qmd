@@ -1,0 +1,80 @@
+---
+title: "Class notes 10.6"
+format: html
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+commute <- data.frame(day = c(1, 2, 3, 4, 5),
+                      to = c(8, 7, 9, 9, 7),
+                      from = c(11, 6, 13, 10, 9))
+commute
+```
+
+To make a ggplot, I need these aesthetics:
+
+```{r}
+#| eval: false
+
+aes(x = day, 
+    y = duration,
+    color = direction)
+```
+
+In a **tidy** data set:
+
+- Each row is an observation
+
+- Each column is a variable
+
+- Each data set includes only one type of observation.
+
+The `commute` data set has a very common sort of issue: it's in a wide format where the values of a variable appear as column names. In this case, `direction`. Columns do not all represent variables. 
+
+The solution for this particular sort of untidy data is `pivot_longer`. Other than the data set, we need to specify 3 things:
+
+- the problem columns where names are actually values (in this case, `to` and `from`).
+
+- the name of the new column where those old column names (actually variable values) will be stored (in this case `direction`)
+
+- the name of the new column where the values in the problem columns will be stored (in this case, `duration`).
+
+```{r}
+commute %>% 
+  pivot_longer(cols = to:from,
+               names_to = "direction",
+               values_to = "duration")
+```
+
+## More on untidy data
+
+The `tidyr` package, which loads with `tidyverse`, includes sevaral version of the same data set. `table1` is the tidy version.
+
+```{r}
+table1
+```
+
+Compare:
+
+```{r}
+table2
+```
+
+Here, names of variables are included in the data set as if they were values. This is a different problem, one we'll handle later. 
+
+```{r}
+table3
+```
+
+Here, two variables are contained in a single column. Use `separate` on this (not covered in this class). 
+
+```{r}
+table4a 
+table4b
+```
+
+

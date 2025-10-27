@@ -1,0 +1,52 @@
+---
+title: "Class notes 9.12"
+author: "Kyle Moyo"
+format: html
+editor: visual
+---
+
+```{r}
+#| message: false
+#| label: setup
+
+library(tidyverse)
+```
+
+## Subsetting data sets
+
+We subset rows in a dataset using the `filter` command, which loads with `tidyverse`. Let's see this using `penguins`.
+
+```{r}
+glimpse(penguins)
+```
+
+A set with just adelies:
+
+```{r}
+filter(penguins,
+       species == "Adelie")
+```
+
+```{r}
+penguins_sm <- filter(penguins,
+                      body_mass_g > 300)
+glimpse(penguins_sm)
+```
+
+Two conditions at once:
+
+```{r}
+penguins_sm <- filter(penguins,
+                      body_mass_g > 300,
+                      species == "Adelie")
+glimpse(penguins_sm)
+```
+
+One species or another:
+
+```{r}
+penguins_sm <- filter(penguins,
+                      species == "Adelie" | 
+                        species == "Chinstrap") 
+glimpse(penguins_sm)
+```

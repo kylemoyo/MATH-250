@@ -1,0 +1,69 @@
+---
+title: "Class notes template"
+format: html
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+```
+
+## More on `mutate` (other `dplyr` verbs = `select`, `filter`, `arrange`)
+
+```{r}
+glimpse(penguins)
+```
+
+Let's convert the bill measurements from mm to in. Let's also make `species` and `island` all lower case.
+
+```{r}
+penguins_murica <- penguins %>%
+  mutate(bill_len_in = bill_len * 0.03937008, 
+         bill_dep_in = bill_dep * 0.03937008,
+         species = tolower(species),
+         island = tolower(island))
+glimpse(penguins_murica)
+```
+
+## Grouped summaries
+
+To start, check out the `summarize` verb.
+
+```{r}
+penguins %>% # pipe useful to get summary data
+  summarize(bill_len_avg = mean(bill_len,
+                                na.rm = TRUE), # if R finds one NA it gives you NA; removes NA values
+            bill_len_sd = sd(bill_len,
+                             na.rm = TRUE))
+```
+I'd really like this for different species. There are two main ways to do this. The most direct is the `.by` argument.
+
+
+```{r}
+penguins %>% # pipe useful to get summary data
+  summarize(bill_len_avg = mean(bill_len,
+                                na.rm = TRUE), # if R finds one NA it gives you NA; removes NA values
+            bill_len_sd = sd(bill_len,
+                             na.rm = TRUE),
+           .by = species)
+
+# data project needs a useful, attractive numerical summary like this
+# legibility matters; use indentation wisely
+```
+
+The older way is technically better but less elegant: 
+
+```{r}
+penguins %>% # command shift M for pipe
+  group_by(species) %>% 
+  summarize(bill_len_avg = mean(bill_len,
+                                na.rm = TRUE), 
+            bill_len_sd = sd(bill_len,
+                                na.rm = TRUE))
+
+  
+```
+

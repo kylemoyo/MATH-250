@@ -1,0 +1,95 @@
+---
+title: "Class notes 9.26"
+format: html
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+```
+
+## More on grouping
+
+We can group by variables that we define on the fly.
+
+```{r}
+diamonds %>% 
+  group_by(big = carat > median(carat)) %>% 
+  summarize(avg_price = mean(price))
+```
+
+We can group by more than one variable at a time. 
+
+```{r}
+diamonds %>% 
+  group_by(big = carat > median(carat),
+           cut) %>% 
+  summarize(avg_price = mean(price))
+```
+
+We can strip away the grouping with `ungroup` if we need. 
+
+Order matters:
+
+```{r}
+diamonds %>% 
+  group_by(cut, 
+           big = carat > median(carat)) %>% 
+  summarize(avg_price = mean(price))
+```
+
+## Slicing a set
+
+What are the five largest diamonds? What are the five largest of each cut?
+
+```{r}
+diamonds %>% 
+  slice_max(order_by = carat,
+            n = 5)
+```
+
+Notice we still have all the variables.
+
+```{r}
+diamonds %>% 
+  group_by(cut) %>% 
+  slice_max(order_by = carat,
+            n = 5)
+```
+
+## Grouped mutates & filters
+
+Let's only keep diamonds that are larger than the median for their cut.
+
+```{r}
+diamonds %>% 
+  group_by(cut) %>% 
+  filter(carat > median(carat))
+```
+
+We can also add columns groupwise using mutate. 
+
+```{r}
+diamonds %>% 
+  group_by(cut) %>% 
+  mutate(median_carat_by_cut = median(carat)) %>% 
+  select(-c(x, y, z))
+```
+
+## Alt text for plots
+
+We add alt text to plots using a chunk option.
+
+```{r}
+#| fig-alt: A bar chart showing higher counts for better cuts of diamonds
+
+ggplot(diamonds, aes(x = cut)) + 
+  geom_bar()
+```
+
+
+
+

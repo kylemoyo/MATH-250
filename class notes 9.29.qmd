@@ -1,0 +1,62 @@
+---
+title: "Class notes 9.29"
+author: Andrew Gard
+format: html
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+
+library(tidyverse)
+```
+
+## Missing data
+
+Broadly speaking, there are three kinds of missing data.
+
+1) **Missing completely at random**, where a random sample of observations are deleted or missing. This is how `slice_sample` works. When doing plots or models, R and other languages assume this type.
+
+2) **Missing at random**, where there are correlations with other variables, but still randonimity in the missingness. It's sometimes possible to *impute* the missing values in this situation.
+
+3) **Missing not at random**, where there are real-world reasons for missing data that may not be apparent from the spreadsheet.
+
+## Example: the `msleep` set.
+
+```{r}
+glimpse(msleep)
+```
+
+Let's start by looking at conservation status. We can learn about the abbreviations used on the internet. What about the `NA`s for this variable? Let's start by isolating these observations.
+
+```{r}
+conserv_na <- msleep %>% 
+  filter(is.na(conservation))
+
+gt::gt(conserv_na)
+```
+
+Some googling tells us that these species weren't endangered at the time the set was made. These `NA`s aren't random. They mean something. We could replace these `NA`s with "not endangered" or something. A useful command is `tidyr::replace_na`.
+
+What about `sleep_rem`? Is the missingness of this variable related to other variables in the set? We might try to answer this by making some plots where missingness is a variable. Let's just check vs `vore`. Ideally, you should check vs every variable of interest in your analysis.
+
+```{r}
+#| fig-alt: a bar chart showing missingness broken down by vore. Carnivores are more likely to be missing, omnivores less. 
+
+msleep <- msleep %>% 
+  mutate(sleep_rem_na = is.na(sleep_rem))
+
+ggplot(msleep, aes(x = vore, 
+                   fill = sleep_rem_na)) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "Dark2")
+```
+
+If we drop observations with missing `sleep_rem`, we'll disproportionately be dropping carnivores, which probably isn't great.
+
+
+
+
+
+

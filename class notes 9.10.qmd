@@ -1,0 +1,47 @@
+---
+title: "class notes 9.10"
+format: html
+editor: visual
+embed-resources: true
+---
+
+```{r}
+#| message: false
+#| label: 
+
+library(tidyverse)
+```
+
+## Faceting
+
+Let's break down `penguins` bill length and depth by species.
+
+```{r}
+#| warning: false
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = bill_depth_mm,
+                     color = species)) + 
+  geom_point() +
+  labs(x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       color = "Species",
+       title = "Penguin bills") +
+  facet_wrap(~species,
+             ncol = 1) +
+  scale_color_brewer(palette = "Dark2") +
+  theme_minimal()
+```
+
+Let's do one more plot using `sex`. For illustration only; this isn't a great plot.
+
+```{r}
+#| warning: false
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = bill_depth_mm,
+                     color = sex)) +
+  geom_point() + 
+  facet_wrap(~species) + 
+  scale_color_brewer(palette = "Dark2") +
+  theme_minimal()
+
+```
