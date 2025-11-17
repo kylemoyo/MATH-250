@@ -1,0 +1,87 @@
+---
+title: "Moyo_Inference_HW6"
+author: "Kyle Moyo"
+format: html
+editor: visual
+embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| error: false
+
+library(tidyverse)
+library(ISLR2)
+```
+
+Let's take a look at the dataset and store the data we want in a variable (`Price` in `Carseats`.)
+
+```{r}
+glimpse(Carseats)
+
+```
+
+## Problem 1
+
+Do the prices in the dataset `Carseats`provide evidence against the company’s claim that the average price of their own seats is \$110?
+
+In this case, we test the following hypothesis:
+
+$$
+\begin{aligned}
+H_0 &: \mu = 110 \\
+H_1 &: \mu \neq 110
+\end{aligned}
+$$
+
+Let's visualize the data using a histogram to get a sense of the how the prices of `Carseats` vary. We can see that the values are distributed normally with a slight left skew.
+
+```{r}
+#| fig-alt: A histogram visualizing the spread of carseat prices. Prices are distributed roughly normally, with a slight left skew. 
+#| message: false
+
+Carseats %>%
+  ggplot(aes(x = Price)) +
+           geom_histogram () +
+           labs(title = "Prices of Carseats",
+                x = "Price",
+                y = "Count") +
+  theme_minimal()
+)
+  
+  
+```
+
+Now that we have these, we can compute a test-statistic for our sample. We only have the sample mean, so the t-test (two-sided) is the preferred method.
+
+```{r}
+t.test(Carseats$Price, mu = 110)
+```
+
+Since p \< $\alpha = 0.05$ we reject the null hypothesis and conclude that the company's claim is fairly accurate. The average price of their seats is indeed \$110.
+
+## Problem 2
+
+We are computing a 90% confidence interval for `CompPrice` in `Carseats`.
+
+```{r}
+t.test(Carseats$CompPrice, conf.level = .90)
+```
+
+As we can seen see, the computed sample mean is `124.975`. To determine the margin of error, we can subtract the upper and lower bounds shown above.
+
+```{r}
+126.2391 -  123.7109
+```
+
+$\bar{x} = 124.975$ME = 2.5282\$
+
+## Problem 3
+
+```{r}
+t <- table(penguins$species, penguins$island)
+addmargins(t)
+
+counts
+```
